@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!-- saved from url=(0140)https://bg2a3w62qbyy8mrf.canva-hosted-embed.com/codelet/AAEAEGJnMmEzdzYycWJ5eThtcmYAAAAAAZf9PWlLkRH2TUlZbqyAF1CSYWuIXgYdBdJkK-WrLrzDckDMbCs/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e8f4fd 0%, #d1e7f5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 245px;
+            height: 175px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: breathe 3s ease-in-out infinite;
+            flex-shrink: 0;
+            min-width: 245px;
+            min-height: 175px;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes breathe {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 40px rgba(74, 144, 226, 0.6);
+            }
+        }
+
+        .envelope-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #87ceeb 0%, #4a90e2 100%);
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(74, 144, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #b3d9ff 0%, #87ceeb 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: 50% 0%;
+            animation: flutter 2s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes flutter {
+            0%, 100% { transform: rotateX(0deg); }
+            25% { transform: rotateX(-2deg); }
+            50% { transform: rotateX(-4deg); }
+            75% { transform: rotateX(-1deg); }
+        }
+
+
+
+        .letter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 380px;
+            height: 570px;
+            background: transparent;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 15;
+            flex-shrink: 0;
+            min-width: 380px;
+            min-height: 570px;
+        }
+
+        .letter.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .letter-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .surprise-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #4a90e2;
+            opacity: 0;
+        }
+
+        .confetti:nth-child(odd) {
+            background: #ffd700;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #2c5aa0;
+        }
+
+        .confetti:nth-child(4n) {
+            background: #7bed9f;
+        }
+
+        .confetti:nth-child(5n) {
+            background: #87ceeb;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti.animate {
+            animation: confetti-fall 3s linear;
+        }
+
+        .hidden-image {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Preload the image -->
+        <link rel="preload" as="image" href="./Birthday Surprise_files/1df97189da5b65ce8993c0f0bc5411b9.png">
+        
+        <div class="envelope" id="envelope">
+            <div class="envelope-body">
+                <div class="envelope-flap"></div>
+            </div>
+        </div>
+        
+        <div class="letter" id="letter">
+            <div class="letter-content">
+                <img src="./Birthday Surprise_files/1df97189da5b65ce8993c0f0bc5411b9.png" alt="Surprise Image" class="surprise-image">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        let isOpened = false;
+
+        function createConfetti() {
+            // Create multiple bursts for more impact
+            for (let burst = 0; burst < 3; burst++) {
+                setTimeout(() => {
+                    for (let i = 0; i < 80; i++) {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        
+                        // More varied sizes
+                        const size = Math.random() * 8 + 6;
+                        confetti.style.width = size + 'px';
+                        confetti.style.height = size + 'px';
+                        
+                        // Start from center and spread outward
+                        const centerX = 50;
+                        const spread = 60;
+                        confetti.style.left = (centerX + (Math.random() - 0.5) * spread) + '%';
+                        
+                        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                        confetti.style.animationDuration = (Math.random() * 1.5 + 2.5) + 's';
+                        
+                        // Add some rotation variety
+                        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0%';
+                        
+                        document.body.appendChild(confetti);
+                        
+                        setTimeout(() => {
+                            confetti.classList.add('animate');
+                        }, 50);
+                        
+                        setTimeout(() => {
+                            confetti.remove();
+                        }, 6000);
+                    }
+                }, burst * 200);
+            }
+        }
+
+        const letter = document.getElementById('letter');
+
+        envelope.addEventListener('click', function() {
+            if (!isOpened) {
+                isOpened = true;
+                
+                // Hide the envelope flap
+                const flap = envelope.querySelector('.envelope-flap');
+                
+                flap.style.animation = 'none';
+                flap.style.transform = 'rotateX(-180deg)';
+                flap.style.transition = 'transform 0.8s ease';
+                
+                // Show letter unfolding from center
+                setTimeout(() => {
+                    letter.classList.add('show');
+                    createConfetti();
+                }, 200);
+                
+                // Remove hover effect and breathing animation
+                envelope.style.cursor = 'default';
+                envelope.style.transform = 'none';
+                envelope.style.animation = 'none';
+            }
+        });
+
+
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95d61d2fa67df23c',t:'MTc1MjIxMzk3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;" src="./Birthday Surprise_files/saved_resource.html"></iframe>
+
+</body></html>
